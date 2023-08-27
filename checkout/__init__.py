@@ -1,0 +1,1 @@
+default_app_confid = 'checkout.apps.checkoutConfig'

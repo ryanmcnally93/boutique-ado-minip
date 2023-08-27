@@ -22,5 +22,6 @@ def update_on_save(sender, instance, created, **kwargs):
 # This calls the same update function when an item is deleted
 @receiver(post_delete, sender=OrderLineItem)
 # The created parameter is not sent by the "deleted" signal, no need to mention it
-def update_on_save(sender, instance, **kwargs):
+def update_on_delete(sender, instance, **kwargs):
+    print('delete signal received!')
     instance.order.update_total()
