@@ -39,7 +39,7 @@ class Order(models.Model):
     # Here we are using aggregate and sum to find the total of the line items
     # We are also adding a new field to the query set called lineitem_total__sum
     def update_total(self):
-        self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum']
+        self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum'] or 0
         # Here we are calculating the delivery cost.
         # Standard delivery is for number of items under the threshold amount
         if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
