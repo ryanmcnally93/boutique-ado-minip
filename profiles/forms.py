@@ -1,16 +1,13 @@
 from django import forms
-from .models import Order
+from .models import UserProfile
 
 
-class OrderForm(forms.ModelForm):
+class UserProfileForm(forms.ModelForm):
     class Meta:
         # Here we are creating a form using the Order model
         # And only using fields that are not automatically filled in
-        model = Order
-        fields = ('full_name', 'email', 'phone_number',
-                  'street_address1', 'street_address2',
-                  'town_or_city', 'postcode', 'country',
-                  'county',)
+        model = UserProfile
+        exclude = ('user',)
 
     # Here we are overriding the normal init method
 
@@ -25,29 +22,28 @@ class OrderForm(forms.ModelForm):
         # They will show up in the form fields rather than
         # clunky field names and empty text boxes in template
         placeholders = {
-            'full_name': 'Full Name',
-            'email': 'Email Address',
-            'phone_number': 'Phone Number',
-            'postcode': 'Postal Code',
-            'town_or_city': 'Town or City',
-            'street_address1': 'Street Address 1',
-            'street_address2': 'Street Address 2',
-            'county': 'County, State or Locality',
+            'default_phone_number': 'Phone Number',
+            'default_postcode': 'Postal Code',
+            'default_town_or_city': 'Town or City',
+            'default_street_address1': 'Street Address 1',
+            'default_street_address2': 'Street Address 2',
+            'default_county': 'County, State or Locality',
         }
 
         # This is just setting the focus automatically to where we want it
-        self.fields['full_name'].widget.attrs['autofocus'] = True
+        self.fields['default_phone_number'].widget.attrs['autofocus'] = True
         # This adds stars to the required fields
         # And sets revelant placeholder names to their inputs
         # Also adds a css class
         # And removes labels as we have placeholders
         for field in self.fields:
-            if field != 'country':
+            if field != 'default_country':
                 if self.fields[field].required:
                     placeholder = f'{placeholders[field]} *'
                 else:
                     placeholder = placeholders[field]
                 self.fields[field].widget.attrs['placeholder'] = placeholder
-            self.fields[field].widget.attrs['class'] = 'stripe-style-input'
+            self.fields[field].widget.attrs['class'] = 'border-black \
+                rounded-0 profile-form-input'
             self.fields[field].label = False
         # This is advanced form customization!
